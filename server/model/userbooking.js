@@ -1,28 +1,31 @@
 const mongoose = require("mongoose");
 
-const registrationSchema = new mongoose.Schema({
+const bookingSchema = new mongoose.Schema({
   buttonId: {
     type: Number,
     required: true,
   },
-  name: {
+  vehicleNumber: {
     type: String,
     required: true,
-    trim:true
+    trim: true
   },
-  email: {
-    type: String,
-    required: true,
-    trim:true
-  },
-  gender: {
-    type: String,
-    required: true,
-  },
-  date: {
+  fromDate: {
     type: Date,
+    required: true,
+  },
+  toDate: {
+    type: Date,
+    required: true,
+  },
+  duration: {
+    type: Number,
+    required: true,
+  },
+  cost: {
+    type: Number,
     required: true,
   },
 });
 
-module.exports= mongoose.model("userbooking", registrationSchema);
+module.exports = mongoose.model("userbooking", bookingSchema);

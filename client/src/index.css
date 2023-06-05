@@ -1,25 +1,18 @@
 .avail {
-  width: 40px;
-  height: 40px;
-  margin: 8px;
-  outline: none;
-  border: none;
-  background-color: #1F8A70;
-  color: #16151c;
-  /* border-radius: 14px 0px 14px 0px; */
+  background-color: #90c2fb;
+  height:4em;
+  width:4em;
+  margin: 0.8em;
+  border: 1px solid #6C9BCF;
+  border-radius: 4px;
   cursor: pointer;
-  border-radius: 50% 20% /10% 40%;
 }
 
 .not-avail {
-  width: 40px;
-  height: 40px;
-  margin: 8px;
-  outline: none;
-  border: none;
-  background-color: #E90064;
-  color: #16151c;
-  /* border-radius: 14px 0px 14px 0px; */
-  border-radius: 50% 20% /10% 40%;
-  cursor: pointer;
+  height:4em;
+  width:4em;
+  margin: 0.8em;
+  border: 1px solid #6C9BCF;
+  border-radius: 4px;
+  color: #6C9BCF;
 }
