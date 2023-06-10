@@ -1,15 +1,39 @@
+// import React from 'react';
+// import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
+// import NoCrashIcon from '@mui/icons-material/NoCrash';
+
+// const ButtonComponent = ({ button, bookedData, onClick }) => {
+//   const forDisable = bookedData.some((data) => data.buttonId === button.id);
+
+//   return (
+//     <button disabled={forDisable} className={forDisable ? 'not-avail' : 'avail'} onClick={onClick}>
+//       {forDisable ? <NoCrashIcon /> : <TimeToLeaveIcon />}
+//     </button>
+//   );
+// };
+
+// export default ButtonComponent;
+
+
+
 import React from 'react';
+import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
+import NoCrashIcon from '@mui/icons-material/NoCrash';
 
-const ButtonComponent = ({ button, bookedData }) => {
-  const forDisable = bookedData.some((data) => data.buttonId === button.id);
-
+const ButtonComponent = ({ button, forDisable, forButtonClick }) => {
   return (
-    <React.Fragment>
-      <button disabled={forDisable} className={forDisable ? 'not-avail' : 'avail'}>
-        {forDisable ? `${button.name}-B` : button.name}
-      </button>
-    </React.Fragment>
+    <button
+      onClick={forButtonClick}
+      disabled={forDisable}
+      variant="contained"
+      className={forDisable ? 'not-avail' : 'avail'}
+      style={{ marginRight: 30, marginBottom: 35 }}
+    >
+      {forDisable ? button.name : button.name}
+    </button>
   );
 };
 
 export default ButtonComponent;
+
+

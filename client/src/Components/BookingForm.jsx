@@ -1,120 +1,115 @@
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useContext } from 'react';
+import { Modal, Typography, TextField, Grid, Button, Badge } from '@mui/material';
+import { BookingContext } from './UserBooking';
 
 const BookingForm = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
 
-  const [data, setData] = useState({
-    vehicleNumber: '',
-    buttonId: id,
-    fromDate: '',
-    fromTime: '',
-    toDate: '',
-    toTime: '',
-  });
-
-  const forCancel = () => {
-    navigate('/');
-  };
-
-  const forChange = (event) => {
-    const { name, value } = event.target;
-    setData({ ...data, [name]: value });
-  };
-
-  const forSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const { fromDate, toDate, vehicleNumber, buttonId } = data;
-      const formattedData = {
-        buttonId,
-        vehicleNumber,
-        fromDate,
-        toDate,
-        duration: forTime(),
-        cost: forCost(),
-      };
-      console.log(formattedData);
-
-      const newData = await axios.post('http://localhost:8081/userbooking', formattedData);
-      console.log(newData);
-      toast.success('Booked Successfully', { position: "top-right", autoClose: 1000, hideProgressBar: true, closeOnClick: true, pauseOnHover: true, draggable: true, progress: undefined, theme: "colored", });
-      navigate('/');
-    } catch (error) {
-      console.log(error);
-      toast.error('Failed to create booking!' ,{
-        theme: "colored",
-      });
-    }
-  };
-
-  const currentDate = new Date().toISOString().split('T')[0];
-
-  const forTime = () => {
-    const { fromDate, fromTime, toDate, toTime } = data;
-    const startTime = new Date(`${fromDate} ${fromTime}`);
-    const endTime = new Date(`${toDate} ${toTime}`);
-    const duration = (endTime - startTime) / (1000 * 60 * 60); // Duration in hours
-    return `${duration}`;
-  };
-
-  const forCost = () => {
-    const duration = forTime();
-    const costPerHour = 120;
-    return duration * `${costPerHour}`;
-  };
-
+  const { showForm, forCancel, data, currentDate, forChange, forSubmit, forTime, forCost } = useContext(BookingContext);
+  
   return (
-    <div>
-      <h3>Booking Form for Slot {id}</h3>
-      <form onSubmit={forSubmit}>
-        <label>
-          Vehicle Number:
-          <input type="text" name="vehicleNumber" onChange={forChange} required />
-        </label>
-        <br />
+    <Modal open={showForm} onClose={forCancel}>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 600,
+          margin: 'auto',
+          marginTop: 50,
+          backgroundColor: 'white',
+          padding: 54,
+          borderRadius: 10,
+        }}
+      >
+        <div>
+          <span className='btn-name'>slot:<Badge className='badge' badgeContent={data.buttonId} color="primary" /></span>
+        </div>
 
-        <label>
-          From Date:
-          <input type="date" name="fromDate" onChange={forChange} min={currentDate} required />
-        </label>
-        <br />
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          Enter Details
+        </div>
 
-        <label>
-          From Time:
-          <input type="time" name="fromTime" onChange={forChange} required />
-        </label>
-        <br />
-
-        <label>
-          To Date:
-          <input type="date" name="toDate" onChange={forChange} min={currentDate} required />
-        </label>
-        <br />
-
-        <label>
-          To Time:
-          <input type="time" name="toTime" onChange={forChange} required />
-        </label>
-        <br />
-
-        {data.fromDate && data.fromTime && data.toDate && data.toTime && (
-          <h4>
-            Duration: {forTime()} hours | Cost: {forCost()} rupees
-          </h4>
-        )}
-
-        <button type="submit">Submit</button>
-        <button type="button" onClick={forCancel}>
-          Cancel
-        </button>
-      </form>
-
-    </div>
+        <form onSubmit={forSubmit}>
+          <Grid container spacing={2} justifyContent="center" style={{ marginTop: 20 }}>
+            <Grid item xs={12}>
+              <TextField InputProps={{
+                style: {
+                  height: "2.6em",
+                  fontFamily: 'IBM Plex Mono'
+                }
+              }} fullWidth placeholder="FullName" name="fullname" onChange={forChange} required />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField InputProps={{
+                style: {
+                  height: "2.6em",
+                  fontFamily: 'IBM Plex Mono'
+                }
+              }} type='tel' fullWidth placeholder="Mobile Number" name="mobile" onChange={forChange} required />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField InputProps={{
+                style: {
+                  height: "2.6em",
+                  fontFamily: 'IBM Plex Mono'
+                }
+              }} fullWidth placeholder="Vehicle Number" name="vehicleNumber" onChange={forChange} required />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField InputProps={{
+                style: {
+                  height: "2.6em",
+                  fontFamily: 'IBM Plex Mono'
+                }
+              }} fullWidth type="date" placeholder="From Date" name="fromDate" onChange={forChange} min={currentDate} required />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField InputProps={{
+                style: {
+                  height: "2.6em",
+                  fontFamily: 'IBM Plex Mono'
+                }
+              }} fullWidth type="time" placeholder="From Time" name="fromTime" onChange={forChange} required />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField InputProps={{
+                style: {
+                  height: "2.6em",
+                  fontFamily: 'IBM Plex Mono'
+                }
+              }} fullWidth type="date" placeholder="To Date" name="toDate" onChange={forChange} min={currentDate} required />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField InputProps={{
+                style: {
+                  height: "2.6em",
+                  fontFamily: 'IBM Plex Mono'
+                }
+              }} fullWidth type="time" placeholder="To Time" name="toTime" onChange={forChange} required />
+            </Grid>
+          </Grid>
+          {
+            data.fromDate && data.fromTime && data.toTime && data.toDate && (
+              <><Typography variant="subtitle1" align="center" style={{ marginTop: 20 }}>
+                Duration: {forTime()} hours
+              </Typography><Typography variant="subtitle1" align="center">
+                  Cost:{forCost()}
+                </Typography></>
+            )}
+          <Grid container justifyContent="center" style={{ marginTop: 20 }}>
+            {/* <Grid sx={{display:'flex',marginTop:'20px'}}> */}
+            <Grid item xs={6}>
+              <button className='btn-cancel' onClick={forCancel}>
+                Cancel
+              </button>
+            </Grid>
+            <Grid item xs={6} >
+              <button className='btn-submit' type="submit" >
+                Book Now
+              </button>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+    </Modal>
   );
 };
 

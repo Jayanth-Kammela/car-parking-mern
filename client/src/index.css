@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300&display=swap');
+
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: 'IBM Plex Mono', monospace;
+  color: #080202;
+}
 .avail {
   background-color: #90c2fb;
   height:4em;
@@ -6,13 +15,64 @@
   border: 1px solid #6C9BCF;
   border-radius: 4px;
   cursor: pointer;
+  vertical-align: baseline;
 }
 
 .not-avail {
   height:4em;
   width:4em;
   margin: 0.8em;
-  border: 1px solid #6C9BCF;
+  /* border: 1px solid #6C9BCF; */
+  background-color: #F65A83;
   border-radius: 4px;
-  color: #6C9BCF;
+  color: #ffff;
+}
+.parent-block{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 6em;
+}
+.block-name{
+  display: flex;
+  justify-content: center;
+}
+.width-size{
+  width: 200px;
+}
+.badge{
+  margin-left: 1em;
+}
+.btn-submit{
+  margin-left: 1em;
+  width: 18.8em;
+  height: 3.2em;
+  background-color: #6C9BCF;
+  border: none;
+  color: #ffff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-cancel{
+  margin-right: 1em;
+  width: 18.8em;
+  height: 3.2em;
+  background-color: #F65A83;
+  cursor: pointer;
+  border: none;
+  color: #ffff;
+  border-radius: 4px;
+}
+
+.css-85svet-MuiGrid-root>.MuiGrid-item{
+  padding-left: 0px !important;
+}
+.css-85svet-MuiGrid-root>.MuiGrid-item{
+  padding: 10px;
+  padding-left: 10px !important;
+}
+
+@media(max-width: 600px){
+  .custom-card{box-shadow:'0px'}
 }
