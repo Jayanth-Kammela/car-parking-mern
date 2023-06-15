@@ -1,16 +1,19 @@
 import React, { useState, useEffect, createContext } from 'react';
-import axios from 'axios';
 import ButtonComponent from './ButtonComponent';
 import BookingForm from './BookingForm';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { getBooking, postBooking } from '../Services/Services';
+import { CustomStyles } from '../Styles/CustomStyles';
 
 export const BookingContext = createContext();
 
+
 const UserBooking = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState({
+
+  const initialVal = {
     fullname: '',
     mobile: '',
     buttonId: null,
@@ -21,7 +24,8 @@ const UserBooking = () => {
     toTime: '',
     duration: 0,
     cost: 0,
-  });
+  }
+  const [data, setData] = useState(initialVal);
   const [bookedData, setBookedData] = useState([]);
   const [showForm, setShowForm] = useState(false);
 
@@ -31,9 +35,9 @@ const UserBooking = () => {
 
   const getData = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/userbooking');
+      const response = await getBooking()
+      console.log(response.data);
       setBookedData(response.data.activeArray);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -66,7 +70,7 @@ const UserBooking = () => {
     const { fromDate, fromTime, toDate, toTime } = data;
     const startTime = new Date(`${fromDate} ${fromTime}`);
     const endTime = new Date(`${toDate} ${toTime}`);
-    const duration = (endTime - startTime) / (1000 * 60 * 60); // 1 hour
+    const duration = (endTime - startTime) / (1000 * 60 * 60); // 1 hr
     return duration;
   };
 
@@ -97,11 +101,8 @@ const UserBooking = () => {
       cost: forCost(),
     };
     try {
-      const newData = await axios.post('http://localhost:8081/userbooking', formattedData);
-      console.log(formattedData);
-
+      const newData = await postBooking(formattedData)
       const ticketId = newData.data._id;
-      console.log(ticketId);
       toast.success('Booked Successfully', {
         position: 'top-right',
         autoClose: 1000,
@@ -117,7 +118,6 @@ const UserBooking = () => {
       setShowForm(false);
 
       navigate(`/ticket/${ticketId}`);
-      console.log('app');
       getData();
     } catch (error) {
       console.log(error);
@@ -169,14 +169,14 @@ const UserBooking = () => {
 
   return (
     <BookingContext.Provider value={{ data, currentDate, showForm, forChange, forSubmit, forCancel, forTime, forCost }}>
-      <div className='parent-block'>
-        <div style={{ display: 'flex', flexWrap: 'wrap', marginRight: 20 }}>
+      <div style={{ ...CustomStyles.Block }}>
+        <div style={{ ...CustomStyles.BlockDown }}>
           <div>
             <h1 className='block-name'>Block-A</h1>
             {filterButtonsByCategory('A')}
           </div>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', marginLeft: 20 }}>
+        <div style={{ ...CustomStyles.BlockDown }}>
           <div>
             <h1 className='block-name'>Block-B</h1>
             {filterButtonsByCategory('B')}
